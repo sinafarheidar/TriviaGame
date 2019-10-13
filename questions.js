@@ -28,31 +28,33 @@ var questions = [
   ];
   // End of questions for the quiz
 
-  // Timer per question
 
   var timeEl = document.querySelector(".time");
 var mainEl = document.getElementById("main");
-var questionEl = document.querySelector("#question")
-var answersEl = document.querySelector("#answers")
+var questionEl = document.querySelector("#question");
+var answersEl = document.querySelector("#answers");
+var resultEl = document.querySelector("#answerResult");
 var round = 0;
 var score = 0;
 score = document.querySelector("#score");
 
 var secondsLeft = 16;
 
-function setTime() {
-  var timerInterval = setInterval(function() {
-    secondsLeft--;
-    timeEl.textContent = secondsLeft + " seconds left on this question";
+// function setTime() {
+//   var timerInterval = setInterval(function() {
+//     secondsLeft--;
+//     timeEl.textContent = secondsLeft + " seconds left on this question";
 
-    if(secondsLeft === 0) {
-      clearInterval(timerInterval);
-      sendMessage();
-      round++
-    }
-
-  }, 1000);
-}
+//     if(secondsLeft == 0) {
+//       sendMessage();
+//       round++;
+//       clearInterval(timerInterval);
+//       secondsLeft = 16;
+//       newQuestion();
+//       setTime();
+//     }
+//   }, 1000);
+// }
 
 
 
@@ -70,8 +72,9 @@ function sendMessage() {
 // Displays questions 
 function newQuestion() {
 
-  setTime();  
-        
+  // setTime();  
+        questionEl.innerHTML = "";
+        answersEl.innerHTML = "";
         var question = questions[round].title;
     
         var h1El = document.createElement("h1");
@@ -82,10 +85,11 @@ function newQuestion() {
           var btnEl = document.createElement("button");
           btnEl.textContent = questions[round].choices[i];
           btnEl.setAttribute("data-index", round);
-          btnEl.setAttribute("class", "answerOption");
-          // btnEl.setAttribute("class", "btn btn-outline-secondary");
+          btnEl.setAttribute("class", "answerOption btn btn-outline-secondary col-md-12");
           answersEl.appendChild(btnEl);
         }
+        // return window.location.assign("end.html")
+        
 }
 
 // Event listener for clicking answer options
@@ -93,21 +97,24 @@ document.addEventListener("click", function(e) {
   if (event.target.classList.contains("answerOption")) {
     var guess = event.target.textContent;
     var correct = guess === questions[round].answer;
-
+  
     if (correct) {
-      score.textContent++
-      // score.textContent = score + secondsLeft;
-      var h3El = document.createElement("h3");
-      h3El.textContent = "Correct!";
-      questionEl.appendChild(h3El);
-    } else {
-      var h3El = document.createElement("h3");
-      h3El.textContent = "Wrong!";
-      questionEl.appendChild(h3El);
+      score.textContent++;
+     resultEl.innerHTML = "";
+     resultEl.innerHTML = "Correct!";
+       } else {
+        resultEl.innerHTML = "";
+        resultEl.innerHTML = "WRONG!";
     }
-    round++
+
+
+
+
+    
+    
+    round++;
     newQuestion();
-    setTime();
+    // setTime();
   }
   
 })
